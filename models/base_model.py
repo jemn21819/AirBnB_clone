@@ -38,7 +38,7 @@ class BaseModel:
 
     def to_dict(self):
         """return a dictionary with all key/value"""
-        new_dict = self.__dict_.copy()
+        new_dict = self.__dict__.copy()
         if "created_at" in new_dict:
             new_dict["created_at"] = new_dict["created_at"].strftime(date_time)
         if "updated_at" in new_dict:
