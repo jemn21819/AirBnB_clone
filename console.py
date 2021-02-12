@@ -5,6 +5,7 @@
 import cmd
 import json
 import shlex
+import models
 from sys import argv
 from models import storage
 from models.base_model import BaseModel
@@ -15,14 +16,17 @@ from models.state import State
 from models.amenity import Amenity
 from models.review import Review
 
+classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
+           "Place": Place, "Review": Review, "State": State, "User": User}
 
 class HBNBCommand(cmd.Cmd):
     """ Base Command file class """
 
     prompt = '(hbnb) '
     intro = "Welcome to our AirBnb clone console!"
-    classes = {"BaseModel", "User", "Place", "City", "Amenity",
-            "State", "Review"}
+
+    classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
+               "Place": Place, "Review": Review, "State": State, "User": User}
 
 #
 #        Help documentation section.
@@ -59,12 +63,11 @@ class HBNBCommand(cmd.Cmd):
 
     def do_show(self, argv):
         """ Prints the string representation of an instance
-        given the class name and id
-        """
+        given the class name and id """
         args = shlex.split(argv)
         if len(args) == 0 or args[0] == "":
             return print("** class name missing **")
-        elif args[1] not in classes:
+        elif args[0] not in classes:
             return print("** class doesn't exist **")
         elif len(args) == 1 or args[1] == "":
             return print("** instance id missing **")
@@ -79,11 +82,11 @@ class HBNBCommand(cmd.Cmd):
     def do_destroy(self, argv):
         """ Destroys an instances given the class name & id """
         args = shlex.split(argv)
-        if len(args) == 0 or args[0] = "":
+        if len(args) == 0 or args[0] == "":
             return print("** class name missing **")
         elif args[0] not in classes:
             return print("** class doesn't exist **")
-        elif len(args) = 1 or args[1] = "":
+        elif len(args) == 1 or args[1] == "":
             return print("** instance id missing **")
         else:
             the_dict = storage.all()
@@ -92,7 +95,51 @@ class HBNBCommand(cmd.Cmd):
                 del the_dict[key]
                 storage.save()
             else:
-                return print("** instance not found **)
+                return print("** instance not found **")
+
+    def do_all(self, line):
+        """ Prints the string representation of all instances
+        based or not on the class name """
+        instance_list = []
+        if line == "":
+            for key, value in (storage.all()).items():
+                instance_list.append(value)
+            print(instance_list)
+        elif line in self.classes:
+            for key, value in (storage.all()).items():
+                if key == "{}.{}".format(line, value.id):
+                    instance_list.append(value)
+            print(instance_list)
+        else:
+            print("** class doesn't exist **")
+
+    def do_update(self, argv):
+        """ Updates an instance based on the class name and id
+        by adding or updating attribute """
+        args = shlex.split(argv)
+        if len(args) == 0 or args[0] == "":
+            print("** class name missing **")
+        elif args[0] not in classes:
+            print("** class doesn't exist **")
+        elif len(args) == 1 or args[1] == "":
+            print("** instance id missing **")
+        elif len(args) == 2:
+            the_dict = storage.all()
+            key = args[0] + "." + args[1]
+            if key not in the_dict:
+                print("** no instance found **")
+            else:
+                print("** attribute name missing**")
+        elif len(args) == 3:
+            print("** value missing **")
+        else:
+            the_dict = storage.all()
+            key = args[0] + "." + args[1]
+            if key in the_dict:
+                setattr(the_dict[key], args[2], args[3])
+                storage.save()
+
+
 
 
     def emptyline(self):
@@ -108,21 +155,14 @@ class HBNBCommand(cmd.Cmd):
 #
 
     def do_quit(self, line):
-        """
-    --- quit help documentation ---
-
-        The quit function closes the console gracefully
-        """
+        """ --- quit help documentation ---
+        The quit function closes the console gracefully """
         return True
 
     def do_EOF(self, line):
-        """
-    --- EOF help documentation ---
-
+        """ --- EOF help documentation ---
         EOF force closes the console.
-
-        Use (Ctrl + D) to force close the console.
-        """
+        Use (Ctrl + D) to force close the console. """
         return True
 
 if __name__ == '__main__':
