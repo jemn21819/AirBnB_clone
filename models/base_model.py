@@ -15,16 +15,19 @@ class BaseModel:
         """ initialization the constructor"""
         if kwargs:
             for key, value in kwargs.items():
-                if key == 'created_at' or key == 'updated_at':
-                    value = datetime.strptime(value, date_time)
-                if '__class__' != key:
+                if key != "__class__":
                     setattr(self, key, value)
+                if hasattr(self, "created_at") and type(self.created_at) is str:
+                    self.created_at = datetime.strptime(kwargs["created_at"], date_time)
+                if hasattr(self, "updated_at") and type(self.updated_at) is str:
+                    self.updated_at = datetime.strptime(kwargs["updated_at"], date_time)
 
         else:
             self.id = str(uuid.uuid4())
             self.created_at = datetime.now()
-            self.updated_at = datetime.now()
+            self.updated_at = self.created_at
             models.storage.new(self)
+            models.storage.save()
 
     def __str__(self):
         """string represent BaseModel class"""
