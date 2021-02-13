@@ -6,7 +6,9 @@ import models
 import uuid
 from datetime import datetime
 
-date_time = "%Y-%m-%dT%H:%M:%S.%f"
+t = "%Y-%m-%dT%H:%M:%S.%f"
+c = "created_at"
+u = "updated_at"
 
 
 class BaseModel:
@@ -17,10 +19,10 @@ class BaseModel:
             for key, value in kwargs.items():
                 if key != "__class__":
                     setattr(self, key, value)
-                if hasattr(self, "created_at") and type(self.created_at) is str:
-                    self.created_at = datetime.strptime(kwargs["created_at"], date_time)
-                if hasattr(self, "updated_at") and type(self.updated_at) is str:
-                    self.updated_at = datetime.strptime(kwargs["updated_at"], date_time)
+                if hasattr(self, c) and type(self.created_at) is str:
+                    self.created_at = datetime.strptime(kwargs[c], t)
+                if hasattr(self, u) and type(self.updated_at) is str:
+                    self.updated_at = datetime.strptime(kwargs[u], t)
 
         else:
             self.id = str(uuid.uuid4())
@@ -31,8 +33,8 @@ class BaseModel:
 
     def __str__(self):
         """string represent BaseModel class"""
-        return "[{:s}] ({}) {}".format(self.__class__.__name__, self.id,
-                                       self.__dict__)
+        return "[{:s}] ({:s}) {}".format(self.__class__.__name__, self.id,
+                                         self.__dict__)
 
     def save(self):
         """update public instance att updated_at to current date"""
@@ -42,9 +44,9 @@ class BaseModel:
     def to_dict(self):
         """return a dictionary with all key/value"""
         new_dict = self.__dict__.copy()
-        if "created_at" in new_dict:
-            new_dict["created_at"] = new_dict["created_at"].strftime(date_time)
-        if "updated_at" in new_dict:
-            new_dict["updated_at"] = new_dict["updated_at"].strftime(date_time)
+        if c in new_dict:
+            new_dict[c] = new_dict[c].strftime(t)
+        if u in new_dict:
+            new_dict[u] = new_dict[u].strftime(t)
         new_dict["__class__"] = self.__class__.__name__
         return new_dict
