@@ -97,19 +97,16 @@ class HBNBCommand(cmd.Cmd):
             else:
                 return print("** instance not found **")
 
-    def do_all(self, line):
+    def do_all(self, class_name):
         """ Prints the string representation of all instances
         based or not on the class name """
-        instance_list = []
-        if line == "":
-            for key, value in (storage.all()).items():
-                instance_list.append(value)
-            print(instance_list)
-        elif line in self.classes:
-            for key, value in (storage.all()).items():
-                if key == "{}.{}".format(line, value.id):
-                    instance_list.append(value)
-            print(instance_list)
+        if class_name not in classes:
+            for value in storage.all().values():
+                print(value)
+        elif class_name in self.classes:
+            for key, value in storage.all().items():
+                if key == "{}.{}".format(class_name, value.id):
+                    print(value)
         else:
             print("** class doesn't exist **")
 
