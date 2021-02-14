@@ -15,9 +15,8 @@ from models.place import Place
 from models.state import State
 from models.amenity import Amenity
 from models.review import Review
+from models.engine.file_storage import classes
 
-classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-           "Place": Place, "Review": Review, "State": State, "User": User}
 
 class HBNBCommand(cmd.Cmd):
     """ Base Command file class """
@@ -135,9 +134,6 @@ class HBNBCommand(cmd.Cmd):
             if key in the_dict:
                 setattr(the_dict[key], args[2], args[3])
                 storage.save()
-
-
-
 
     def emptyline(self):
         """ Does nothing on (empty line + 'Enter') """
