@@ -16,3 +16,7 @@
 *   What is **kwargs and how to use it
 *   How to handle named arguments in a function
 
+### Primary Objective
+
+ This project focuses on the development of the console part
+ of the Air bnb clone holberton project which.
