@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-Test for the User class
+Test for the State class
 """
 
 
@@ -44,6 +44,7 @@ class TestStateDocStyle(unittest.TestCase):
                         "State.py without a docstring")
 
     def test_class_doc(self):
+        """test for class cocumentation"""
         self.assertIsNot(State.__doc__, None,
                          "State class without docstring")
         self.assertTrue(len(State.__doc__) >= 1,

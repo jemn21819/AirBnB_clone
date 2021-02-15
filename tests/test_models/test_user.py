@@ -44,6 +44,7 @@ class TestUserDocStyle(unittest.TestCase):
                         "User.py without a docstring")
 
     def test_class_doc(self):
+        """test for class documentation"""
         self.assertIsNot(User.__doc__, None,
                          "User class without docstring")
         self.assertTrue(len(User.__doc__) >= 1,
