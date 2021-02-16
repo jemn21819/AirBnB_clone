@@ -86,12 +86,12 @@ class HBNBCommand(cmd.Cmd):
         if len(args) == 0:
             for value in storage.all().values():
                 print(value)
-        elif len(args) == 1 or args[0] == "":
+        else:
             if args[0] not in classes:
                 print("** class doesn't exits **")
             else:
                 for key, value in storage.all().items():
-                    if key == "{}.{}".format(argv, value.id):
+                    if key == "{}.{}".format(args[0], value.id):
                         print(value)
 
     def do_update(self, argv):
