@@ -7,8 +7,6 @@ import uuid
 from datetime import datetime
 
 t = "%Y-%m-%dT%H:%M:%S.%f"
-c = "created_at"
-u = "updated_at"
 
 
 class BaseModel:
@@ -21,10 +19,12 @@ class BaseModel:
             for key, value in kwargs.items():
                 if key != "__class__":
                     setattr(self, key, value)
-            if hasattr(self, c) and type(self.created_at) is str:
-                self.created_at = datetime.strptime(kwargs[c], t)
-            if hasattr(self, u) and type(self.updated_at) is str:
-                self.updated_at = datetime.strptime(kwargs[u], t)
+            if hasattr(self, "created_at") and type(self.created_at) is str:
+                self.created_at = datetime.strptime(
+                        kwargs["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
+            if hasattr(self, "updated_at") and type(self.updated_at) is str:
+                self.updated_at = datetime.strptime(
+                        kwargs["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
 
         else:
             self.id = str(uuid.uuid4())
