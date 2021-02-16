@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
-    This is the Air bnb clone Console. It works to navigate the Air bnb Environmet.
+    This is the Air bnb clone Console. It works to navigate the
+    Air bnb Environmet.
     Much like a shell.
 """
 import cmd
@@ -29,24 +30,6 @@ class HBNBCommand(cmd.Cmd):
                "Place": Place, "Review": Review, "State": State, "User": User}
 
 #
-#        Help documentation section.
-#
-
-    def do_help(self, args):
-        """
-    --- Get help on commands ---
-
-        'help' or '?' with no arguments prints a list of available
-         commands for which help is available
-
-        'help <command>' or '? <command>' gives help on <command>
-
-        """
-        # The only reason to define this method is for/
-        # the help method to appear in the docstring
-        cmd.Cmd.do_help(self, args)
-
-#
 #        Console interface and behavior.
 #
 
@@ -55,7 +38,7 @@ class HBNBCommand(cmd.Cmd):
         if len(cls) == 0 or cls == "":
             return print("** class name missing **")
         elif cls not in classes:
-            return print("** class doesn't exist")
+            return print("** class doesn't exist **")
         else:
             new_obj = eval(cls)()
             new_obj.save()
