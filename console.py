@@ -32,14 +32,15 @@ class HBNBCommand(cmd.Cmd):
 #        Console interface and behavior.
 #
 
-    def do_create(self, cls):
+    def do_create(self, argv):
         """ Creates a new object based on BaseModel """
-        if len(cls) == 0 or cls == "":
+        args = shlex.split(argv, posix=False)
+        if len(args) == 0:
             return print("** class name missing **")
-        elif cls not in classes:
+        elif args[0] not in classes:
             return print("** class doesn't exist **")
         else:
-            new_obj = eval(cls)()
+            new_obj = eval(args[0])()
             new_obj.save()
             print(new_obj.id)
 
@@ -115,6 +116,7 @@ class HBNBCommand(cmd.Cmd):
             print("** value missing **")
         else:
             the_dict = storage.all()
+            args[3] = args[3].strip('"')
             key = args[0] + "." + args[1]
             if key in the_dict:
                 setattr(the_dict[key], args[2], args[3])
