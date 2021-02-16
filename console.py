@@ -118,7 +118,7 @@ class HBNBCommand(cmd.Cmd):
             key = args[0] + "." + args[1]
             if key in the_dict:
                 setattr(the_dict[key], args[2], args[3])
-                storage.save()
+                the_dict[key].save()
 
     def emptyline(self):
         """ Does nothing on (empty line + 'Enter') """
