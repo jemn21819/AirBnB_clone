@@ -24,6 +24,7 @@ class FileStorage:
         return self.__objects
 
     def new(self, obj):
+        """ Instantiates a new object and saves it to the dictionary with its new key """
         key = obj.__class__.__name__ + "." + obj.id
         self.__objects[key] = obj
 
