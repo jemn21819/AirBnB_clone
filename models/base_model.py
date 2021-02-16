@@ -6,8 +6,6 @@ import models
 import uuid
 from datetime import datetime
 
-t = "%Y-%m-%dT%H:%M:%S.%f"
-
 
 class BaseModel:
     """
