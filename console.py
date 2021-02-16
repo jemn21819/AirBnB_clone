@@ -46,7 +46,7 @@ class HBNBCommand(cmd.Cmd):
     def do_show(self, argv):
         """ Prints the string representation of an instance
         given the class name and id """
-        args = shlex.split(argv)
+        args = shlex.split(argv, posix=False)
         if len(args) == 0 or args[0] == "":
             return print("** class name missing **")
         elif args[0] not in classes:
@@ -63,7 +63,7 @@ class HBNBCommand(cmd.Cmd):
 
     def do_destroy(self, argv):
         """ Destroys an instances given the class name & id """
-        args = shlex.split(argv)
+        args = shlex.split(argv, posix=False)
         if len(args) == 0 or args[0] == "":
             return print("** class name missing **")
         elif args[0] not in classes:
@@ -82,11 +82,11 @@ class HBNBCommand(cmd.Cmd):
     def do_all(self, argv):
         """ Prints the string representation of all instances
         based or not on the class name """
-        args = shlex.split(argv)
+        args = shlex.split(argv, posix=False)
         if len(args) == 0:
             for value in storage.all().values():
                 print(value)
-        elif len(args) == 1:
+        elif len(args) == 1 or args[0] == "":
             if args[0] not in classes:
                 print("** class doesn't exits **")
             else:
@@ -97,7 +97,7 @@ class HBNBCommand(cmd.Cmd):
     def do_update(self, argv):
         """ Updates an instance based on the class name and id
         by adding or updating attribute """
-        args = shlex.split(argv)
+        args = shlex.split(argv, posix=False)
         if len(args) == 0 or args[0] == "":
             print("** class name missing **")
         elif args[0] not in classes:
