@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
-
+    This is the Air bnb clone Console. It works to navigate the Air bnb Environmet.
+    Much like a shell.
 """
 import cmd
 import json
@@ -158,5 +159,8 @@ class HBNBCommand(cmd.Cmd):
         Use (Ctrl + D) to force close the console. """
         return True
 
+#
+# Advanced Tasks Functions
+#
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
