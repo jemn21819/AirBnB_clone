@@ -24,7 +24,6 @@ class HBNBCommand(cmd.Cmd):
     """ Base Command file class """
 
     prompt = '(hbnb) '
-    intro = "Welcome to our AirBnb clone console!"
 
     classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
                "Place": Place, "Review": Review, "State": State, "User": User}
