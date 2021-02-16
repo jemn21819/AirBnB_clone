@@ -46,9 +46,9 @@ class TestFileStorageDoc(unittest.TestCase):
     def test_module_doc(self):
         """test for the doc in module"""
         self.assertIsNot(file_storage.__doc__, None,
-                         "place.py without a docstring")
+                         "file without a docstring")
         self.assertTrue(len(file_storage.__doc__) >= 1,
-                        "place.py without a docstring")
+                        "file without a docstring")
 
     def test_class_doc(self):
         """test for class documentation"""
