@@ -21,9 +21,9 @@ class BaseModel:
             for key, value in kwargs.items():
                 if key != "__class__":
                     setattr(self, key, value)
-                elif hasattr(self, c) and type(self.created_at) is str:
+                if hasattr(self, c) and type(self.created_at) is str:
                     self.created_at = datetime.strptime(kwargs[c], t)
-                elif hasattr(self, u) and type(self.updated_at) is str:
+                if hasattr(self, u) and type(self.updated_at) is str:
                     self.updated_at = datetime.strptime(kwargs[u], t)
 
         else:
