@@ -36,7 +36,7 @@ class BaseModel:
     def __str__(self):
         """string represent BaseModel class"""
         return "[{}] ({}) {}".format(self.__class__.__name__, self.id,
-                                         self.__dict__)
+                                     self.__dict__)
 
     def save(self):
         """update public instance att updated_at to current date"""
