@@ -8,7 +8,6 @@ import cmd
 import json
 import shlex
 import models
-from sys import argv
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
@@ -18,6 +17,7 @@ from models.state import State
 from models.amenity import Amenity
 from models.review import Review
 from models.engine.file_storage import classes
+
 
 
 class HBNBCommand(cmd.Cmd):
@@ -130,13 +130,14 @@ class HBNBCommand(cmd.Cmd):
     def do_quit(self, line):
         """ --- quit help documentation ---
         The quit function closes the console gracefully """
-        print
+        print()
         return True
 
     def do_EOF(self, line):
         """ --- EOF help documentation ---
         EOF force closes the console.
         Use (Ctrl + D) to force close the console. """
+        print()
         return True
 
 #
