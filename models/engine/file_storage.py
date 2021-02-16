@@ -11,7 +11,8 @@ import json
 import os
 
 classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-                   "Place": Place, "Review": Review, "State": State, "User": User}
+           "Place": Place, "Review": Review, "State": State, "User": User}
+
 
 class FileStorage:
     """Class for serialization and deserialization"""
@@ -23,7 +24,7 @@ class FileStorage:
         return self.__objects
 
     def new(self, obj):
-        key =  obj.__class__.__name__ + "." + obj.id
+        key = obj.__class__.__name__ + "." + obj.id
         self.__objects[key] = obj
 
     def save(self):
