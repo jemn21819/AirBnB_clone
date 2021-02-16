@@ -111,7 +111,7 @@ class HBNBCommand(cmd.Cmd):
             if key not in the_dict:
                 print("** no instance found **")
             else:
-                print("** attribute name missing**")
+                print("** attribute name missing **")
         elif len(args) == 3:
             print("** value missing **")
         else:
