@@ -121,7 +121,9 @@ class HBNBCommand(cmd.Cmd):
 
     def emptyline(self):
         """ Does nothing on (empty line + 'Enter') """
-        pass
+        if self.lastcmd:
+            self.lastcmd = ""
+            return self.onecmd('\n')
 
 #
 #        EOF and quit Functions.
