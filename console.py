@@ -140,10 +140,6 @@ class HBNBCommand(cmd.Cmd):
         """ Does nothing on (empty line + 'Enter') """
         pass
 
-    def postloop(self):
-        """ Prints new line after exit """
-        print
-
 #
 #        EOF and quit Functions.
 #
@@ -151,6 +147,7 @@ class HBNBCommand(cmd.Cmd):
     def do_quit(self, line):
         """ --- quit help documentation ---
         The quit function closes the console gracefully """
+        print
         return True
 
     def do_EOF(self, line):
