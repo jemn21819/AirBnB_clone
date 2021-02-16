@@ -91,7 +91,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exits **")
             else:
                 for key, value in storage.all().items():
-                    if key == "{}.{}".format(class_name, value.id):
+                    if key == "{}.{}".format(argv, value.id):
                         print(value)
 
     def do_update(self, argv):
