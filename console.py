@@ -99,11 +99,11 @@ class HBNBCommand(cmd.Cmd):
         """ Updates an instance based on the class name and id
         by adding or updating attribute """
         args = shlex.split(argv, posix=False)
-        if len(args) == 0 or args[0] == "":
+        if len(args) == 0:
             print("** class name missing **")
         elif args[0] not in classes:
             print("** class doesn't exist **")
-        elif len(args) == 1 or args[1] == "":
+        elif len(args) == 1:
             print("** instance id missing **")
         elif len(args) == 2:
             the_dict = storage.all()
