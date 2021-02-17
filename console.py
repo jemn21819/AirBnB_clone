@@ -6,31 +6,14 @@
 """
 import re
 import cmd
-import json
-import shlex
 import models
-from models import storage
-from models.base_model import BaseModel
-from models.user import User
-from models.city import City
-from models.place import Place
-from models.state import State
-from models.amenity import Amenity
-from models.review import Review
-from models.engine.file_storage import classes
+from datetime import datetime
 
 
 class HBNBCommand(cmd.Cmd):
     """ Base Command file class """
 
     prompt = '(hbnb) '
-
-    classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-               "Place": Place, "Review": Review, "State": State, "User": User}
-
-#
-#        Console interface and behavior.
-#
 
     def do_create(self, argv):
         """ Creates a new object based on BaseModel """
@@ -87,23 +70,9 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** class doesn't exist **")
 
-    """def do_all(self, argv):
-       Prints the string representation of all instances
-        based or not on the class name
-        args = shlex.split(argv, posix=False)
-        if len(args) == 0:
-            for value in storage.all().values():
-                print(value)
-        else:
-            if args[0] not in classes:
-                print("** class doesn't exits **")
-            else:
-                for key, value in storage.all().items():
-                    if key == "{}.{}".format(args[0], value.id):
-                        print(value)"""
-
     def do_all(self, line):
-        """some comments here"""
+        """rints all string representation of all instances
+        based or not on the class name"""
         if len(line) == 0:
             print([str(v) for v in models.storage.all().values()])
         elif line not in models.class_dict:
@@ -112,34 +81,9 @@ class HBNBCommand(cmd.Cmd):
             print([str(v) for k, v in models.storage.all().items()
                    if line in k])
 
-    """def do_update(self, argv):
-        Updates an instance based on the class name and id
-        by adding or updating attribute
-        args = shlex.split(argv, posix=False)
-        if len(args) == 0:
-            print("** class name missing **")
-        elif args[0] not in classes:
-            print("** class doesn't exist **")
-        elif len(args) == 1:
-            print("** instance id missing **")
-        elif len(args) == 2:
-            the_dict = storage.all()
-            key = args[0] + "." + args[1]
-            if key not in the_dict:
-                print("** no instance found **")
-            else:
-                print("** attribute name missing **")
-        elif len(args) == 3:
-            print("** value missing **")
-        else:
-            the_dict = storage.all()
-            args[3] = args[3].strip('"')
-            key = args[0] + "." + args[1]
-            if key in the_dict:
-                setattr(the_dict[key], args[2], args[3])
-                the_dict[key].save()"""
     def do_update(self, line):
-        """some comments over here"""
+        """pdates an instance based on the class name and id by
+        adding or updating attribute"""
         if len(line) == 0:
             print("** class name missing **")
         else:
@@ -182,9 +126,6 @@ class HBNBCommand(cmd.Cmd):
     def emptyline(self):
         """ Does nothing on (empty line + 'Enter') """
         pass
-#
-#        EOF and quit Functions.
-#
 
     def do_quit(self, line):
         """ --- quit help documentation ---
@@ -198,8 +139,5 @@ class HBNBCommand(cmd.Cmd):
         print()
         return True
 
-#
-# Advanced Tasks Functions
-#
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
