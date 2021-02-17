@@ -20,7 +20,6 @@ def pattern(arg):
     return cmd, line
 
 
-
 class HBNBCommand(cmd.Cmd):
     """ Base Command file class """
 
