@@ -10,14 +10,6 @@ import models
 from datetime import datetime
 
 
-#cmd_dict = {"create": Create,
-#        "show": Show,
-#        "all": All,
-#        "count": Count,
-#        "destroy": Destroy,
-#        "update": Update
-#}
-
 def pattern(arg):
     """ Changing the default input function to manage callable functions """
     pattern = '\.([^.]+)\(|([^(),]+)[,\s()]*[,\s()]*'
@@ -142,6 +134,16 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** class doesn't exist **")
 
+    def do_count(self, line):
+        """ """
+        instance_cnt = 0
+        curr_dict = models.storage.all()
+        for key, val in curr_dict.items():
+            val = val.to_dict()
+            if val['__class__'] == line:
+                instance_cnt += 1
+        print(instance_cnt)
+
     def do_Amenity(self, arg):
         """ """
         cmd, line = pattern(arg)
@@ -176,22 +178,6 @@ class HBNBCommand(cmd.Cmd):
         """ """
         cmd, line = pattern(arg)
         self.onecmd(' '.join([cmd, 'Place', line]))
-
-    """        args = argv.split('.')
-        if args[0] not in models.class_dict:
-            print("** class doesn't exist **")
-        else:
-            cmd_args = args[1].split("()")
-            if cmd_args[0] not in cmd_dict:
-                print("** command doesn't exist **")
-            else:
-                cmd_args = args[1].split()
-                if len(cmd_args) == 3:
-                    cmd_args = (cmd_args[1] + " " + cmd_args[2])
-                elif len(cmd_args) >= 4:
-                    cmd_args = (cmd_args[1] + " " + cmd_args[2] + " "
-                                + cmd_args[3])
-                self.onecmd(cmd_args[0] + " " + args[0] + " " + cmd_args) """
 
     def emptyline(self):
         """ Does nothing on (empty line + 'Enter') """
