@@ -10,6 +10,25 @@ import models
 from datetime import datetime
 
 
+#cmd_dict = {"create": Create,
+#        "show": Show,
+#        "all": All,
+#        "count": Count,
+#        "destroy": Destroy,
+#        "update": Update
+#}
+
+def pattern(arg):
+    """ Changing the default input function to manage callable functions """
+    pattern = '\.([^.]+)\(|([^(),]+)[,\s()]*[,\s()]*'
+    argum = re.findall(pattern, arg)
+    cmd = argum[0][0]
+    argum = argum[1:]
+    line = ' '.join(map(lambda x: x[1].strip('"'), argum))
+    return cmd, line
+
+
+
 class HBNBCommand(cmd.Cmd):
     """ Base Command file class """
 
@@ -122,6 +141,57 @@ class HBNBCommand(cmd.Cmd):
                                     obj.save()
             else:
                 print("** class doesn't exist **")
+
+    def do_Amenity(self, arg):
+        """ """
+        cmd, line = pattern(arg)
+        self.onecmd(' '.join([cmd, 'Amenity', line]))
+
+    def do_User(self, arg):
+        """ """
+        cmd, line = pattern(arg)
+        self.onecmd(' '.join([cmd, 'User', line]))
+
+    def do_BaseModel(self, arg):
+        """ """
+        cmd, line = pattern(arg)
+        self.onecmd(' '.join([cmd, 'BaseModel', line]))
+
+    def do_City(self, arg):
+        """ """
+        cmd, line = pattern(arg)
+        self.onecmd(' '.join([cmd, 'City', line]))
+
+    def do_Review(self, arg):
+        """ """
+        cmd, line = pattern(arg)
+        self.onecmd(' '.join([cmd, 'Review', line]))
+
+    def do_State(self, arg):
+        """ """
+        cmd, line = pattern(arg)
+        self.onecmd(' '.join([cmd, 'State', line]))
+
+    def do_Place(self, arg):
+        """ """
+        cmd, line = pattern(arg)
+        self.onecmd(' '.join([cmd, 'Place', line]))
+
+    """        args = argv.split('.')
+        if args[0] not in models.class_dict:
+            print("** class doesn't exist **")
+        else:
+            cmd_args = args[1].split("()")
+            if cmd_args[0] not in cmd_dict:
+                print("** command doesn't exist **")
+            else:
+                cmd_args = args[1].split()
+                if len(cmd_args) == 3:
+                    cmd_args = (cmd_args[1] + " " + cmd_args[2])
+                elif len(cmd_args) >= 4:
+                    cmd_args = (cmd_args[1] + " " + cmd_args[2] + " "
+                                + cmd_args[3])
+                self.onecmd(cmd_args[0] + " " + args[0] + " " + cmd_args) """
 
     def emptyline(self):
         """ Does nothing on (empty line + 'Enter') """
