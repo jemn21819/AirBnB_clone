@@ -1,25 +1,17 @@
 #!/usr/bin/python3
-"""
-    This is the Air bnb clone Console. It works to navigate the
-    Air bnb Environmet.
-    Much like a shell.
-"""
-import re
+"""This is the console for AirBnB"""
+
 import cmd
-import json
-import shlex
-import models
+import re
 from models import storage
 from models.base_model import BaseModel
 from models.user import User
-from models.city import City
-from models.place import Place
 from models.state import State
+from models.city import City
 from models.amenity import Amenity
+from models.place import Place
 from models.review import Review
-from models.engine.file_storage import classes
-classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-           "Place": Place, "Review": Review, "State": State, "User": User}
+import models
 
 
 def pattern(arg):
@@ -29,10 +21,10 @@ def pattern(arg):
     <class>. <cmd> ([args, ...])
     """
     pattern = '\.([^.]+)\(|([^(),]+)[,\s()]*[,\s()]*'
-    argmt = re.findall(pattern, arg)
-    cmd = argmt[0][0]
-    argmt = argmt[1:]
-    line = ' '.join(map(lambda x: x[1].strip('"'), argmt))
+    argum = re.findall(pattern, arg)
+    cmd = argum[0][0]
+    argum = argum[1:]
+    line = ' '.join(map(lambda x: x[1].strip('"'), argum))
     return cmd, line
 
 
@@ -61,40 +53,51 @@ def loop_dic(line, obj_upt):
 
 
 class HBNBCommand(cmd.Cmd):
-    """ Base Command file class """
+    """AirBnB console main class"""
+    prompt = "(hbnb) "
 
-    prompt = '(hbnb) '
+    def do_EOF(self, arg):
+        """Handle End Of File"""
+        return True
 
-    classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
-               "Place": Place, "Review": Review, "State": State, "User": User}
+    def do_quit(self, arg):
+        """Exit program"""
+        return True
 
-#
-#        Console interface and behavior.
-#
-    def do_create(self, argv):
-        """ Creates a new object based on BaseModel """
-        if len(argv) == 0:
+    def emptyline(self):
+        """If line is empty don't do anything"""
+        pass
+
+    def do_create(self, arg):
+        """
+        Creates a new instance of BaseModel, saves it (to the JSON file)
+        and prints the id. Ex: $ create BaseModel
+        """
+        if len(arg) == 0:
             print("** class name missing **")
         else:
             try:
-                cls = models.classes[argv]
+                cls = models.classes[arg]
             except KeyError:
                 print("** class doesn't exist **")
-        else:
-            new_obj = cls()
-            new_obj.save()
-            print(new_obj.id)
+            else:
+                obj = cls()
+                obj.save()
+                print(obj.id)
 
-    def do_show(self, argv):
-        """ Prints the string representation of an instance
-        given the class name and id """
-        if len(argv) == 0:
+    def do_show(self, arg):
+        """
+        Prints the string representation of an instance
+        based on the class name and id.
+        Ex: $ show BaseModel 1234-1234-1234.
+        """
+        if len(arg) == 0:
             print("** class name missing **")
         else:
-            line = argv.split(' ')
+            line = arg.split(' ')
             if line[0] in models.classes:
                 try:
-                    key = line[0] + "." + line[1]
+                    key = "{}.{}".format(line[0], line[1])
                 except IndexError:
                     print("** instance id missing **")
                 else:
@@ -105,15 +108,19 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** class doesn't exist **")
 
-    def do_destroy(self, argv):
-        """ Destroys an instances given the class name & id """
-        if len(argv) == 0:
+    def do_destroy(self, arg):
+        """
+         Deletes an instance based on the class name and id
+         (save the change into the JSON file).
+         Ex: $ destroy BaseModel 1234-1234-1234.
+         """
+        if len(arg) == 0:
             print("** class name missing **")
         else:
-            line = argv.split(' ')
+            line = arg.split(' ')
             if line[0] in models.classes:
                 try:
-                    key = line[0] + "." + line[1]
+                    key = "{}.{}".format(line[0], line[1])
                 except IndexError:
                     print("** instance id missing **")
                 else:
@@ -127,16 +134,19 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** class doesn't exist **")
 
-    def do_all(self, argv):
-        """ Prints the string representation of all instances
-        based or not on the class name """
-        if len(argv) == 0:
+    def do_all(self, arg):
+        """
+        Prints all string representation of all instances
+        based or not on the class name.
+        Ex: $ all BaseModel or $ all
+        """
+        if len(arg) == 0:
             print([str(value) for value in models.storage.all().values()])
-        elif argv not in models.classes:
+        elif arg not in models.classes:
             print("** class doesn't exist **")
         else:
             print([str(value) for key, value in models.storage.all().items()
-                   if argv in key])
+                   if arg in key])
 
     def do_update(self, arg):
         """
@@ -148,8 +158,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class name missing **")
         else:
             line = arg.split(' ')
-            for i in range(len(line)):
-                line[i] = line[i].strip("\"'\"{\"}:\"'")
+            for iter in range(len(line)):
+                line[iter] = line[iter].strip("\"'\"{\"}:\"'")
             if line[0] in models.classes:
                 try:
                     key = "{}.{}".format(line[0], line[1])
@@ -178,21 +188,88 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** class doesn't exist **")
 
-    def emptyline(self):
-        """ Does nothing on (empty line + 'Enter') """
-        pass
+    def do_BaseModel(self, arg):
+        """
+        Lets you invoke each of the console methods
+        for the BaseModel class with the following syntax:
+        BaseModel.<cmd>([args, ...])
+        cmd can be: all, create, update, show destroy
+        """
+        cmd, line = pattern(arg)
+        self.onecmd(' '.join([cmd, 'BaseModel', line]))
 
-    def do_quit(self, line):
-        """ --- quit help documentation ---
-        The quit function closes the console gracefully """
-        return True
+    def do_Amenity(self, arg):
+        """
+        Lets you invoke each of the console methods
+        for the Amenity class with the following syntax:
+        Amenity.<cmd>([args, ...])
+        cmd can be: all, create, update, show destroy
+        """
+        cmd, line = pattern(arg)
+        self.onecmd(' '.join([cmd, 'Amenity', line]))
 
-    def do_EOF(self, line):
-        """ --- EOF help documentation ---
-        EOF force closes the console.
-        Use (Ctrl + D) to force close the console. """
-        print()
-        return True
+    def do_City(self, arg):
+        """
+        Lets you invoke each of the console methods
+        for the City class with the following syntax:
+        City.<cmd>([args, ...])
+        cmd can be: all, create, update, show destroy
+        """
+        cmd, line = pattern(arg)
+        self.onecmd(' '.join([cmd, 'City', line]))
+
+    def do_Place(self, arg):
+        """
+        Lets you invoke each of the console methods
+        for the Place class with the following syntax:
+        Place.<cmd>([args, ...])
+        cmd can be: all, create, update, show destroy
+        """
+        cmd, line = pattern(arg)
+        self.onecmd(' '.join([cmd, 'Place', line]))
+
+    def do_Review(self, arg):
+        """
+        Lets you invoke each of the console methods
+        for the Review class with the following syntax:
+        Review.<cmd>([args, ...])
+        cmd can be: all, create, update, show destroy
+        """
+        cmd, line = pattern(arg)
+        self.onecmd(' '.join([cmd, 'Review', line]))
+
+    def do_State(self, arg):
+        """
+        Lets you invoke each of the console methods
+        for the State class with the following syntax:
+        State.<cmd>([args, ...])
+        cmd can be: all, create, update, show destroy
+        """
+        cmd, line = pattern(arg)
+        self.onecmd(' '.join([cmd, 'State', line]))
+
+    def do_User(self, arg):
+        """
+        Lets you invoke each of the console methods
+        for the User class with the following syntax:
+        User.<cmd>([args, ...])
+        cmd can be: all, create, update, show destroy
+        """
+        cmd, line = pattern(arg)
+        self.onecmd(' '.join([cmd, 'User', line]))
+
+    def do_count(self, arg):
+        """
+        Retrieve the number of instances of a class: <class name>.count()
+        """
+        if len(arg) == 0:
+            print(len([str(value) for value in models.storage.all().values()]))
+        elif arg in models.classes:
+            print(len([str(value) for key, value in
+                       models.storage.all().items()
+                      if arg in key]))
+        else:
+            print("** class doesn't exist **")
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
