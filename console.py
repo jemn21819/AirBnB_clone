@@ -82,9 +82,9 @@ class HBNBCommand(cmd.Cmd):
             else:
                 return print("** instance not found **")
 
-    def do_all(self, argv):
-        """Prints the string representation of all instances
-        based or not on the class name"""
+    """def do_all(self, argv):
+       Prints the string representation of all instances
+        based or not on the class name
         args = shlex.split(argv, posix=False)
         if len(args) == 0:
             for value in storage.all().values():
@@ -95,7 +95,17 @@ class HBNBCommand(cmd.Cmd):
             else:
                 for key, value in storage.all().items():
                     if key == "{}.{}".format(args[0], value.id):
-                        print(value)
+                        print(value)"""
+
+    def do_all(self, line):
+        """some comments here"""
+        if len(line) == 0:
+            print([str(v) for v in models.storage.all().values()])
+        elif line not in models.class_dict:
+            print("** class doesn't exist **")
+        else:
+            print([str(v) for k, v in models.storage.all().items()
+                   if line in k])
 
     """def do_update(self, argv):
         Updates an instance based on the class name and id
