@@ -18,6 +18,8 @@ from models.state import State
 from models.amenity import Amenity
 from models.review import Review
 from models.engine.file_storage import classes
+classes = {"Amenity": Amenity, "BaseModel": BaseModel, "City": City,
+           "Place": Place, "Review": Review, "State": State, "User": User}
 
 
 def pattern(arg):
