@@ -4,6 +4,7 @@
     Air bnb Environmet.
     Much like a shell.
 """
+import re
 import cmd
 import json
 import shlex
@@ -17,7 +18,6 @@ from models.state import State
 from models.amenity import Amenity
 from models.review import Review
 from models.engine.file_storage import classes
-
 
 
 class HBNBCommand(cmd.Cmd):
@@ -94,20 +94,10 @@ class HBNBCommand(cmd.Cmd):
                 for key, value in storage.all().items():
                     if key == "{}.{}".format(args[0], value.id):
                         print(value)
-    """
-    def do_all(self, arg):
-        Print the string representation
-        if len(arg) == 0:
-            print([str(value) for value in models.storage.all().values()])
-        elif arg not in models.classes:
-            print("** class doesn't exist **")
-        else:
-            print([str(value) for key, value in models.storage.all().items()
-                    if arg in key])"""
 
-    def do_update(self, argv):
-        """ Updates an instance based on the class name and id
-        by adding or updating attribute """
+    """def do_update(self, argv):
+        Updates an instance based on the class name and id
+        by adding or updating attribute
         args = shlex.split(argv, posix=False)
         if len(args) == 0:
             print("** class name missing **")
@@ -130,7 +120,47 @@ class HBNBCommand(cmd.Cmd):
             key = args[0] + "." + args[1]
             if key in the_dict:
                 setattr(the_dict[key], args[2], args[3])
-                the_dict[key].save()
+                the_dict[key].save()"""
+    def do_update(self, line):
+        """some comments over here"""
+        if len(line) == 0:
+            print("** class name missing **")
+        else:
+            pattern = "[^\s\"\']+|\"[^\"]*\"|\'[^\']*\'"
+            pattern = re.compile(pattern)
+            line = re.findall(pattern, line)
+            for i in range(len(line)):
+                line[i] = line[i].strip("\"'")
+            if line[0] in models.class_dict:
+                try:
+                    obj_id = line[0] + '.' + line[1]
+                except IndexError:
+                    print("** instance id missing **")
+                else:
+                    try:
+                        obj = models.storage.all()[obj_id]
+                    except KeyError:
+                        print("** no instance found **")
+                    else:
+                        try:
+                            attr = line[2]
+                        except IndexError:
+                            print("** attribute name missing **")
+                        else:
+                            try:
+                                val = line[3]
+                            except IndexError:
+                                print("** value missing **")
+                            else:
+                                try:
+                                    setattr(obj, attr, val)
+                                except AttributeError:
+                                    print("** cannot set val: {}".format(val) +
+                                          " for attr: ({}) **".format(attr))
+                                else:
+                                    obj.save()
+            else:
+                print("** class doesn't exist **")
 
     def emptyline(self):
         """ Does nothing on (empty line + 'Enter') """
