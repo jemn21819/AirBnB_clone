@@ -48,11 +48,11 @@ class HBNBCommand(cmd.Cmd):
         """ Prints the string representation of an instance
         given the class name and id """
         args = shlex.split(argv, posix=False)
-        if len(args) == 0 or args[0] == "":
+        if len(args) == 0:
             return print("** class name missing **")
         elif args[0] not in classes:
             return print("** class doesn't exist **")
-        elif len(args) == 1 or args[1] == "":
+        elif len(args) == 1:
             return print("** instance id missing **")
         else:
             the_dict = storage.all()
@@ -65,11 +65,11 @@ class HBNBCommand(cmd.Cmd):
     def do_destroy(self, argv):
         """ Destroys an instances given the class name & id """
         args = shlex.split(argv, posix=False)
-        if len(args) == 0 or args[0] == "":
+        if len(args) == 0:
             return print("** class name missing **")
         elif args[0] not in classes:
             return print("** class doesn't exist **")
-        elif len(args) == 1 or args[1] == "":
+        elif len(args) == 1:
             return print("** instance id missing **")
         else:
             the_dict = storage.all()
