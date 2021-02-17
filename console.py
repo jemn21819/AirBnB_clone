@@ -1,83 +1,55 @@
 #!/usr/bin/python3
-"""This is the console for AirBnB"""
+"""Python console prints prompt and quits"""
 
 import cmd
-import re
-from models import storage
-from models.base_model import BaseModel
-from models.user import User
-from models.state import State
-from models.city import City
-from models.amenity import Amenity
-from models.place import Place
-from models.review import Review
+from datetime import datetime
 import models
-
-
-def pattern(arg):
-    """
-    Retrieve the cmd method and the respective arguments according
-    to a pattern so that they can be invoked under this scheme:
-    <class>. <cmd> ([args, ...])
-    """
-    pattern = '\.([^.]+)\(|([^(),]+)[,\s()]*[,\s()]*'
-    argum = re.findall(pattern, arg)
-    cmd = argum[0][0]
-    argum = argum[1:]
-    line = ' '.join(map(lambda x: x[1].strip('"'), argum))
-    return cmd, line
-
-
-def loop_dic(line, obj_upt):
-    """
-    Loop for update with format:
-    <class name>.update(<id>, <dictionary representation>)
-    """
-    j = 4
-    while j <= len(line):
-        try:
-            atrribute = line[j]
-        except IndexError:
-            print("** attribute name missing **")
-        else:
-            try:
-                value = line[j+1]
-            except IndexError:
-                print("** value missing **")
-            else:
-                setattr(obj_upt, atrribute, value)
-                obj_upt.save()
-                if j+1 == len(line) - 1:
-                    break
-        j += 1
+import re
 
 
 class HBNBCommand(cmd.Cmd):
-    """AirBnB console main class"""
-    prompt = "(hbnb) "
+    """Command console class"""
+    prompt = '(hbnb) '
 
-    def do_EOF(self, arg):
-        """Handle End Of File"""
+    def precmd(self, line):
+        return line.strip()
+
+    def do_EOF(self, line):
+        """
+        EOF:
+        End of file. Exits the console.
+        """
         return True
 
-    def do_quit(self, arg):
-        """Exit program"""
+    def do_quit(self, line):
+        """
+        quit:
+        Exits the console.
+        """
         return True
 
     def emptyline(self):
-        """If line is empty don't do anything"""
+        """If line is empty don't do anything (as opposed to execute previous
+        command)."""
         pass
 
-    def do_create(self, arg):
+    def do_create(self, line):
         """
-        Creates a new instance of BaseModel, saves it (to the JSON file)
-        and prints the id. Ex: $ create BaseModel
+        create:
+        Creates a new instance of BaseModel, saves it and prints the id.
+        This method breaks a string of arguments down into smaller chunks,
+        or strings. It will try to return the value of the named attribute.
+        That will be stored, saved, and printed. If the named attribute
+        doesn't exist, KeyError is raised and handled before "** class
+        doesn't exist **" is printed to the screen.
+        If the class name is missing, "** class name missing **" will be
+        printed to the screen.
         """
-        if len(arg) == 0:
+        if len(line) == 0:
             print("** class name missing **")
         else:
             try:
-                cls = models.classes[arg]
+                cls = models.class_dict[line]
             except KeyError:
                 print("** class doesn't exist **")
             else:
@@ -85,48 +57,63 @@ class HBNBCommand(cmd.Cmd):
                 obj.save()
                 print(obj.id)
 
-    def do_show(self, arg):
+    def do_show(self, line):
         """
-        Prints the string representation of an instance
-        based on the class name and id.
-        Ex: $ show BaseModel 1234-1234-1234.
+        show:
+        Prints the string representation of an instance - class name and id
+        This method splits the arguments into smaller strings before the
+        arguments are used. If the length of the arguments is less than two,
+        IndexError is raised, handled, and "** instance id missing **" will
+        print to the screen since more than one argument is needed. However,
+        if an appropriate amount of arguments is available, the result of
+        class name and id will print to the screen. Otherwise, KeyError
+        will be raised, handled and "** no instance found **" will be printed
+        to the screen.
+        If the class name is missing, "** class name missing **" will be
+        printed to the screen. If the class name doesn't exist, "** class
+        doesn't exist **" will be printed to the screen.
         """
-        if len(arg) == 0:
+        if len(line) == 0:
             print("** class name missing **")
         else:
-            line = arg.split(' ')
-            if line[0] in models.classes:
+            line = line.split()
+            if line[0] in models.class_dict:
                 try:
-                    key = "{}.{}".format(line[0], line[1])
+                    obj_id = line[0] + '.' + line[1]
                 except IndexError:
                     print("** instance id missing **")
                 else:
                     try:
-                        print(models.storage.all()[key])
+                        print(models.storage.all()[obj_id])
                     except KeyError:
                         print("** no instance found **")
             else:
                 print("** class doesn't exist **")
 
-    def do_destroy(self, arg):
+    def do_destroy(self, line):
         """
-         Deletes an instance based on the class name and id
-         (save the change into the JSON file).
-         Ex: $ destroy BaseModel 1234-1234-1234.
-         """
-        if len(arg) == 0:
+        destroy:
+        Deletes an instance based on the class name and id.
+        This method requires two arguments, a class name and id. If the class
+        name is missing, "** class name missing **" will be printed to the
+        screen. If class name doesn't exist, "** class doesn't exist **"
+        will be printed to the screen. If class name does exist, then the
+        command will search for the id, or the second argument. If the id is
+        missing, IndexError is raised and "** instance id missing **" will
+        print to the screen. However, if found, the instance will be deleted.
+        """
+        if len(line) == 0:
             print("** class name missing **")
         else:
-            line = arg.split(' ')
-            if line[0] in models.classes:
+            line = line.split()
+            if line[0] in models.class_dict:
                 try:
-                    key = "{}.{}".format(line[0], line[1])
+                    obj_id = line[0] + '.' + line[1]
                 except IndexError:
                     print("** instance id missing **")
                 else:
                     try:
-                        objects = storage.all()
-                        models.storage.delete(objects[key])
+                        del models.storage.all()[obj_id]
                     except KeyError:
                         print("** no instance found **")
                     else:
@@ -134,142 +121,180 @@ class HBNBCommand(cmd.Cmd):
             else:
                 print("** class doesn't exist **")
 
-    def do_all(self, arg):
+    def do_all(self, line):
         """
-        Prints all string representation of all instances
-        based or not on the class name.
-        Ex: $ all BaseModel or $ all
+        all:
+        Prints all string representation of all instances based or not on
+        the class name.
+        This method will print out the string representation of the value
+        of every instance of a class or not a class. If the class doesn't
+        exist, "** class doesn't exist **" will print to the screen.
         """
-        if len(arg) == 0:
-            print([str(value) for value in models.storage.all().values()])
-        elif arg not in models.classes:
+        if len(line) == 0:
+            print([str(v) for v in models.storage.all().values()])
+        elif line not in models.class_dict:
             print("** class doesn't exist **")
         else:
-            print([str(value) for key, value in models.storage.all().items()
-                   if arg in key])
+            print([str(v) for k, v in models.storage.all().items()
+                   if line in k])
 
-    def do_update(self, arg):
+    def do_update(self, line):
         """
-        Updates an instance based on the class name and id
-        by adding or updating attribute (save the change into the JSON file).
-        Ex: $ update BaseModel 1234-1234-1234 email
+        update:
+        Updates an instance based on the class name and id by adding or
+        updating attribute.
+        This method can only update one attribute at a time. Attributes
+        "created_at", "updated_at", and "id" should't be updated with this
+        method.
+        If the class name is missing, "** class name missing **" is printed
+        to the screen. If the class name doesn't exist, print "** class
+        doesn't exist **".
+        If id is missing, "** instance id missing **" is printed to the screen.
+        If the attribute name is missing, "** attribute name missing **"
+        will be printed to the screen. If the value for the attribute name
+        doesn't exist, "** value missing **" will print to screen.
         """
-        if len(arg) == 0:
+        if len(line) == 0:
             print("** class name missing **")
         else:
-            line = arg.split(' ')
-            for iter in range(len(line)):
-                line[iter] = line[iter].strip("\"'\"{\"}:\"'")
-            if line[0] in models.classes:
+            pattern = "[^\s\"\']+|\"[^\"]*\"|\'[^\']*\'"
+            pattern = re.compile(pattern)
+            line = re.findall(pattern, line)
+            for i in range(len(line)):
+                line[i] = line[i].strip("\"'")
+            if line[0] in models.class_dict:
                 try:
-                    key = "{}.{}".format(line[0], line[1])
+                    obj_id = line[0] + '.' + line[1]
                 except IndexError:
                     print("** instance id missing **")
                 else:
                     try:
-                        obj_upt = models.storage.all()[key]
+                        obj = models.storage.all()[obj_id]
                     except KeyError:
                         print("** no instance found **")
                     else:
                         try:
-                            atrribute = line[2]
+                            attr = line[2]
                         except IndexError:
                             print("** attribute name missing **")
                         else:
                             try:
-                                value = line[3]
+                                val = line[3]
                             except IndexError:
                                 print("** value missing **")
                             else:
-                                setattr(obj_upt, atrribute, value)
-                                obj_upt.save()
-                                if len(line) >= 5:
-                                    loop_dic(line, obj_upt)
+                                try:
+                                    setattr(obj, attr, val)
+                                except AttributeError:
+                                    print("** cannot set val: {}".format(val) +
+                                          " for attr: ({}) **".format(attr))
+                                else:
+                                    obj.save()
             else:
                 print("** class doesn't exist **")
 
-    def do_BaseModel(self, arg):
+    def do_count(self, line):
         """
-        Lets you invoke each of the console methods
-        for the BaseModel class with the following syntax:
-        BaseModel.<cmd>([args, ...])
-        cmd can be: all, create, update, show destroy
+        Usage: count [<class>]
+        Count the number of instances of `class` if provided, otherwise
+        the total number of instances in memory.
         """
-        cmd, line = pattern(arg)
-        self.onecmd(' '.join([cmd, 'BaseModel', line]))
-
-    def do_Amenity(self, arg):
-        """
-        Lets you invoke each of the console methods
-        for the Amenity class with the following syntax:
-        Amenity.<cmd>([args, ...])
-        cmd can be: all, create, update, show destroy
-        """
-        cmd, line = pattern(arg)
-        self.onecmd(' '.join([cmd, 'Amenity', line]))
-
-    def do_City(self, arg):
-        """
-        Lets you invoke each of the console methods
-        for the City class with the following syntax:
-        City.<cmd>([args, ...])
-        cmd can be: all, create, update, show destroy
-        """
-        cmd, line = pattern(arg)
-        self.onecmd(' '.join([cmd, 'City', line]))
-
-    def do_Place(self, arg):
-        """
-        Lets you invoke each of the console methods
-        for the Place class with the following syntax:
-        Place.<cmd>([args, ...])
-        cmd can be: all, create, update, show destroy
-        """
-        cmd, line = pattern(arg)
-        self.onecmd(' '.join([cmd, 'Place', line]))
-
-    def do_Review(self, arg):
-        """
-        Lets you invoke each of the console methods
-        for the Review class with the following syntax:
-        Review.<cmd>([args, ...])
-        cmd can be: all, create, update, show destroy
-        """
-        cmd, line = pattern(arg)
-        self.onecmd(' '.join([cmd, 'Review', line]))
-
-    def do_State(self, arg):
-        """
-        Lets you invoke each of the console methods
-        for the State class with the following syntax:
-        State.<cmd>([args, ...])
-        cmd can be: all, create, update, show destroy
-        """
-        cmd, line = pattern(arg)
-        self.onecmd(' '.join([cmd, 'State', line]))
-
-    def do_User(self, arg):
-        """
-        Lets you invoke each of the console methods
-        for the User class with the following syntax:
-        User.<cmd>([args, ...])
-        cmd can be: all, create, update, show destroy
-        """
-        cmd, line = pattern(arg)
-        self.onecmd(' '.join([cmd, 'User', line]))
-
-    def do_count(self, arg):
-        """
-        Retrieve the number of instances of a class: <class name>.count()
-        """
-        if len(arg) == 0:
-            print(len([str(value) for value in models.storage.all().values()]))
-        elif arg in models.classes:
-            print(len([str(value) for key, value in
-                       models.storage.all().items()
-                      if arg in key]))
-        else:
+        if len(line) == 0:
+            print(len([str(v) for v in models.storage.all().values()]))
+        elif line not in models.class_dict:
             print("** class doesn't exist **")
+        else:
+            print(len([str(v) for k, v in models.storage.all().items()
+                       if line in k]))
+
+    def do_BaseModel(self, line):
+        """Usage: BaseModel.<cmd>([args, ...])
+        `cmd` can be any of:
+            all, show, update, destroy, or create
+        Arguments are the same and in the same order as for other
+        commands.
+        """
+        cmd, args = parse(line)
+        self.onecmd(' '.join([cmd, 'BaseModel', args]))
+
+    def do_User(self, line):
+        """Usage: User.<cmd>([args, ...])
+        `cmd` can be any of:
+            all, show, update, destroy, or create
+        Arguments are the same and in the same order as for other
+        commands.
+        """
+        cmd, args = parse(line)
+        self.onecmd(' '.join([cmd, 'User', args]))
+
+    def do_State(self, line):
+        """Usage: State.<cmd>([args, ...])
+        `cmd` can be any of:
+            all, show, update, destroy, or create
+        Arguments are the same and in the same order as for other
+        commands.
+        """
+        cmd, args = parse(line)
+        self.onecmd(' '.join([cmd, 'State', args]))
+
+    def do_City(self, line):
+        """Usage: City.<cmd>([args, ...])
+        `cmd` can be any of:
+            all, show, update, destroy, or create
+        Arguments are the same and in the same order as for other
+        commands.
+        """
+        cmd, args = parse(line)
+        self.onecmd(' '.join([cmd, 'City', args]))
+
+    def do_Amenity(self, line):
+        """Usage: Amenity.<cmd>([args, ...])
+        `cmd` can be any of:
+            all, show, update, destroy, or create
+        Arguments are the same and in the same order as for other
+        commands.
+        """
+        cmd, args = parse(line)
+        self.onecmd(' '.join([cmd, 'Amenity', args]))
+
+    def do_Place(self, line):
+        """Usage: Place.<cmd>([args, ...])
+        `cmd` can be any of:
+            all, show, update, destroy, or create
+        Arguments are the same and in the same order as for other
+        commands.
+        """
+        cmd, args = parse(line)
+        self.onecmd(' '.join([cmd, 'Place', args]))
+
+    def do_Review(self, line):
+        """Usage: Review.<cmd>([args, ...])
+        `cmd` can be any of:
+            all, show, update, destroy, or create
+        Arguments are the same and in the same order as for other
+        commands.
+        """
+        cmd, args = parse(line)
+        self.onecmd(' '.join([cmd, 'Review', args]))
+
+
+def parse(line):
+    """Parse method-like command.
+    Args:
+        line (str): method call with arguments (e.g. `.all(arg1, arg2)`
+    """
+    pattern = '\.([^.]+)\(|[\s,()]*([^(),]+)[\s,()]*'
+    args = re.findall(pattern, line)
+    cmd = args[0][0]
+    try:
+        args = args[1:]
+    except IndexError:
+        line = ''
+    else:
+        line = ' '.join(map(lambda x: x[1].strip('"'), args))
+    return cmd, line
+
 
 if __name__ == '__main__':
+    """command loop"""
     HBNBCommand().cmdloop()
