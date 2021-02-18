@@ -20,6 +20,27 @@ def pattern(arg):
     return cmd, line
 
 
+def loop_dict(line, obj_update):
+    """ """
+    idx = 4
+    while idx <= len(line):
+        try:
+            attr = line[idx]
+        except IndexError:
+            print("** attribute name missing **")
+        else:
+            try:
+                val = line[idx + 1]
+            except IndexError:
+                print("** no value found **")
+            else:
+                setattr(obj_update, attr, val)
+                obj_update.save()
+                if idx + 1 == len(line) - 1:
+                    break
+        idx += 1
+
+
 class HBNBCommand(cmd.Cmd):
     """ Base Command file class """
 
