@@ -77,6 +77,44 @@ class TestConsoleDocs(unittest.TestCase):
         """Tests correct format of prompt"""
         self.assertEqual("(hbnb) ", HBNBCommand.prompt)
 
+    def test_count(self):
+        """Test for the method count"""
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("BaseModel.count()"))
+            self.assertEqual("1", f.getvalue().strip())
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("create User"))
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("User.count()"))
+            self.assertEqual("1", f.getvalue().strip())
+        with patch("sys.stdout", new=StringIO()) as f:
+                self.assertFalse(HBNBCommand().onecmd("create State"))
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("State.count()"))
+            self.assertEqual("1", f.getvalue().strip())
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("create Place"))
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("Place.count()"))
+            self.assertEqual("1", f.getvalue().strip())
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("create City"))
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("City.count()"))
+            self.assertEqual("1", f.getvalue().strip())
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("create Amenity"))
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("Amenity.count()"))
+            self.assertEqual("1", f.getvalue().strip())
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("create Review"))
+        with patch("sys.stdout", new=StringIO()) as f:
+            self.assertFalse(HBNBCommand().onecmd("Review.count()"))
+            self.assertEqual("1", f.getvalue().strip())
+
     def test_emptyline(self):
         """Test empty line"""
         with patch('sys.stdout', new=StringIO()) as f:
