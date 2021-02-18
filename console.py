@@ -21,7 +21,7 @@ def pattern(arg):
 
 
 def loop_dict(line, obj_update):
-    """ """
+    """ looping function for the adv tasks"""
     idx = 4
     while idx <= len(line):
         try:
@@ -150,7 +150,7 @@ class HBNBCommand(cmd.Cmd):
                 print("** class doesn't exist **")
 
     def do_count(self, line):
-        """ """
+        """ Counts the number of instances of a class """
         instance_cnt = 0
         curr_dict = models.storage.all()
         for key, val in curr_dict.items():
@@ -160,37 +160,37 @@ class HBNBCommand(cmd.Cmd):
         print(instance_cnt)
 
     def do_Amenity(self, arg):
-        """ """
+        """ helper function for amenity class """
         cmd, line = pattern(arg)
         self.onecmd(' '.join([cmd, 'Amenity', line]))
 
     def do_User(self, arg):
-        """ """
+        """ Helper function for User class """
         cmd, line = pattern(arg)
         self.onecmd(' '.join([cmd, 'User', line]))
 
     def do_BaseModel(self, arg):
-        """ """
+        """ Helper function for BaseModel Class """
         cmd, line = pattern(arg)
         self.onecmd(' '.join([cmd, 'BaseModel', line]))
 
     def do_City(self, arg):
-        """ """
+        """ Helper function for BaseModel Class """
         cmd, line = pattern(arg)
         self.onecmd(' '.join([cmd, 'City', line]))
 
     def do_Review(self, arg):
-        """ """
+        """ Helper function for Review class """
         cmd, line = pattern(arg)
         self.onecmd(' '.join([cmd, 'Review', line]))
 
     def do_State(self, arg):
-        """ """
+        """ Helper function for State class """
         cmd, line = pattern(arg)
         self.onecmd(' '.join([cmd, 'State', line]))
 
     def do_Place(self, arg):
-        """ """
+        """ Helper function for Place class"""
         cmd, line = pattern(arg)
         self.onecmd(' '.join([cmd, 'Place', line]))
 
