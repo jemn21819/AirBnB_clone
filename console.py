@@ -118,11 +118,9 @@ class HBNBCommand(cmd.Cmd):
         if len(line) == 0:
             print("** class name missing **")
         else:
-            pattern = "[^\s\"\']+|\"[^\"]*\"|\'[^\']*\'"
-            pattern = re.compile(pattern)
-            line = re.findall(pattern, line)
+            line = line.split(' ')
             for i in range(len(line)):
-                line[i] = line[i].strip("\"'")
+                line[i] = line[i].strip("\"'\"{\"}:\"'")
             if line[0] in models.class_dict:
                 try:
                     obj_id = line[0] + '.' + line[1]
@@ -144,13 +142,10 @@ class HBNBCommand(cmd.Cmd):
                             except IndexError:
                                 print("** value missing **")
                             else:
-                                try:
-                                    setattr(obj, attr, val)
-                                except AttributeError:
-                                    print("** cannot set val: {}".format(val) +
-                                          " for attr: ({}) **".format(attr))
-                                else:
-                                    obj.save()
+                                setattr(obj, attr, val)
+                                obj.save()
+                                if len(line) >= 5:
+                                    loop_dict(line, obj)
             else:
                 print("** class doesn't exist **")
 
