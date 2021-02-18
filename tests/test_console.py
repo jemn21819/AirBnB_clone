@@ -218,25 +218,6 @@ class TestConsoleDocs(unittest.TestCase):
 #
 #        def test_update_notation(self):
 #
-#    def test_count(self):
-#        """Test for count"""
-#        with patch("sys.stdout", new=StringIO()) as f:
-#            self.assertFalse(HBNBCommand().onecmd("create BaseModel"))
-#            self.assertFalse(HBNBCommand().onecmd("create User"))
-#            self.assertFalse(HBNBCommand().onecmd("create Amenity"))
-#            self.assertFalse(HBNBCommand().onecmd("create City"))
-#            self.assertFalse(HBNBCommand().onecmd("create State"))
-#            self.assertFalse(HBNBCommand().onecmd("create Review"))
-#            self.assertFalse(HBNBCommand().onecmd("create Place"))
-#        with patch("sys.stdout", new=StringIO()) as f:
-#            self.assertFalse(HBNBCommand().onecmd("BaseModel.count()"))
-#            self.assertFalse(HBNBCommand().onecmd("User.count()"))
-#            self.assertFalse(HBNBCommand().onecmd("Amenity.count()"))
-#            self.assertFalse(HBNBCommand().onecmd("City.count()"))
-#            self.assertFalse(HBNBCommand().onecmd("State.count()"))
-#            self.assertFalse(HBNBCommand().onecmd("Review.count()"))
-#            self.assertFalse(HBNBCommand().onecmd("Place.count()"))
-#            self.assertEqual("1", f.getvalue().strip())
 
 if __name__ == "__main__":
     unittest.main()
