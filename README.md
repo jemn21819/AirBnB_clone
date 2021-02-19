@@ -183,7 +183,7 @@ EOF  all  create  destroy  help  quit  show  update
 No known bugs at this time. 
 
 ## Authors
-Jaime Martínez - [Github](https://github.com/jemn21819) 
+Jaime Martínez - [Github](https://github.com/jemn21819) /
 Joshua Carreras - [Github](https://github.com/Lohkrii)
 
 ## License
