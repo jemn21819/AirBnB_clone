@@ -227,8 +227,8 @@ The "all" command prints all string representation of all instances and the "upd
 No known bugs at this time. 
 
 ## Authors
-* **Jaime Martínez - [Github](https://github.com/jemn21819)
-* **Joshua Carreras - [Github](https://github.com/Lohkrii)
+* Jaime Martínez - [Github](https://github.com/jemn21819)
+* Joshua Carreras - [Github](https://github.com/Lohkrii)
 
 ## License
 Public Domain. No copy write protection. 
