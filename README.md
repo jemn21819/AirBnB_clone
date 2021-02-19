@@ -155,8 +155,73 @@ TestBaseModel class:
 * `def test_user_module_docstring(self)` - Test for the user.py module docstring
 * `def test_user_class_docstring(self)` - Test for the User class docstring
 
+## How to use the console
 
-## Examples of use
+The purpose of the console is to be able to create, show, destroy, save, and update all the classes we need/want. It allows us to start and stop processes when we need to. In other words, we can experiment with the file storage to test what we want and don't want. With our console.py file, here is a short guide on how to use our console:
+
+```
+AirBnB_clone$ ./console.py
+(hbnb) 
+(hbnb) 
+(hbnb) all
+[]
+```
+
+To run our console, simply type in "./console.py". The console will then prompt you with "(hbnb)". If you type all without creating a BaseModel (new class), empty brackets should print to the terminal. However, if class names and instances don't exist, errors should always print out. See example below:
+
+```
+(hbnb) all Basemodel
+** class doesn't exist **
+(hbnb) show BaseModel
+** instance id missing **
+(hbnb) show BaseModel 121212
+** no instance found **
+```
+
+To create a new User:
+
+```
+(hbnb) User.create()
+1bab8a19-a0c7-43ef-956b-b3271bdd684f
+(hbnb) User.all()
+["[User] (1bab8a19-a0c7-43ef-956b-b3271bdd684f) {'updated_at': datetime.datetime(2017, 10, 4, 18, 21, 27, 164392), 'email': '', 'created_at': datetime.datetime(2017, 10, 4, 18, 21, 27, 164366), 'last_name': '', 'password': '', 'id': '1bab8a19-a0c7-43ef-956b-b3271bdd684f', 'first_name': ''}"]
+```
+
+The above example is an advanced feature that allows you to create a new User using ".create". However, you can also create a new User with the regular syntax. For example:
+
+```
+(hbnb) create User
+777f8007-5aeb-4568-8334-807d507edce0
+(hbnb) all User
+["[User] (777f8007-5aeb-4568-8334-807d507edce0) {'updated_at': datetime.datetime(2017, 10, 4, 18, 21, 59, 114711), 'email': '', 'created_at': datetime.datetime(2017, 10, 4, 18, 21, 59, 114685), 'last_name': '', 'password': '', 'id': '777f8007-5aeb-4568-8334-807d507edce0', 'first_name': ''}", "[User] (1bab8a19-a0c7-43ef-956b-b3271bdd684f) {'updated_at': datetime.datetime(2017, 10, 4, 18, 21, 27, 164392), 'email': '', 'created_at': datetime.datetime(2017, 10, 4, 18, 21, 27, 164366), 'last_name': '', 'password': '', 'id': '1bab8a19-a0c7-43ef-956b-b3271bdd684f', 'first_name': ''}"]
+```
+
+To show a specific User, you'll have to use the "show" command. The show command takes in two arguments - name and id. In the examples, User is the name of all users, but their ids are unique. Please see example below:
+
+```
+(hbnb) show User 777f8007-5aeb-4568-8334-807d507edce0
+[User] (777f8007-5aeb-4568-8334-807d507edce0) {'updated_at': datetime.datetime(2017, 10, 4, 18, 21, 59, 114711), 'email': '', 'created_at': datetime.datetime(2017, 10, 4, 18, 21, 59, 114685), 'last_name': '', 'password': '', 'id': '777f8007-5aeb-4568-8334-807d507edce0', 'first_name': ''}
+```
+
+To destroy a User, use the "destroy" command. The command takes in two arguments - name and id. When successfully implemented, destroy will delete the User from file storage. Please see example below:
+
+```
+(hbnb) create User
+06505348-0c86-4273-b1c2-68eefcbbab0c
+(hbnb) show User 06505348-0c86-4273-b1c2-68eefcbbab0c
+[User] (06505348-0c86-4273-b1c2-68eefcbbab0c) {'id': '06505348-0c86-4273-b1c2-68eefcbbab0c', 'last_name': '', 'updated_at': datetime.datetime(2017, 10, 4, 19, 18, 40, 976205), 'email': '', 'created_at': datetime.datetime(2017, 10, 4, 19, 18, 40, 976174), 'password': '', 'first_name': ''}
+(hbnb) destroy User 06505348-0c86-4273-b1c2-68eefcbbab0c
+(hbnb) show User 06505348-0c86-4273-b1c2-68eefcbbab0c
+** no instance found **
+```
+
+The "all" command prints all string representation of all instances and the "update" command is used to update the User information. In the example below, the first name is updated to "Betty". Everything can be updated except the id, created and updated datetime.
+
+```
+(hbnb) update BaseModel 49faff9a-6318-451f-87b6-910505c55907 first_name "Betty"
+(hbnb) show BaseModel 49faff9a-6318-451f-87b6-910505c55907
+[BaseModel] (49faff9a-6318-451f-87b6-910505c55907) {'first_name': 'Betty', 'id': '49faff9a-6318-451f-87b6-910505c55907', 'created_at': datetime.datetime(2017, 10, 2, 3, 10, 25, 903293), 'updated_at': datetime.datetime(2017, 10, 2, 3, 11, 3, 49401)}
+
 ```
 vagrantAirBnB_clone$./console.py
 (hbnb) help
@@ -183,8 +248,8 @@ EOF  all  create  destroy  help  quit  show  update
 No known bugs at this time. 
 
 ## Authors
-Jaime Martínez - [Github](https://github.com/jemn21819) /
-Joshua Carreras - [Github](https://github.com/Lohkrii)
+* **Jaime Martínez - [Github](https://github.com/jemn21819)
+* **Joshua Carreras - [Github](https://github.com/Lohkrii)
 
 ## License
 Public Domain. No copy write protection. 
