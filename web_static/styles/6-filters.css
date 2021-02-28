@@ -1,0 +1,107 @@
+body .filters {
+	position: relative;
+	background-color: white;
+	height: 70px;
+	width: 100%;
+	border: 1px solid #DDDDDD;
+	border-radius: 4px;
+	align-items: center;
+	display: flex;
+}
+
+button {
+	position: absolute;
+	font-size: 18px;
+	background-color: #FF5A5F;
+	color: #FFFFFF;
+	height: 48px;
+	width: 20%;
+	border: none;
+	border-radius: 4px;
+	margin-left: 770px;
+	vertical-align: middle;
+}
+
+.filters button:hover {
+	opacity: 90%;
+}
+
+/*TASK 5*/
+body .filters .locations {
+	border-right: 1px solid #DDDDDD;
+	height: 100%;
+	width: 25%;
+	right: 10px;
+}
+
+body .filters .locations h3 {
+	font-weight: 600;
+	position: relative;
+	left: 50px;
+}
+
+body .filters .locations h4 {
+	font-weight: 400;
+	position: relative;
+	left: 50px;
+	bottom: 15px;
+}
+
+body .filters .amenities {
+	height: 100%;
+	width: 25%;
+}
+
+body .filters .amenities h3 {
+	font-weight: 600;
+	position: relative;
+	left: 50px;
+}
+
+body .filters .amenities h4 {
+	font-weight: 400;
+	position: relative;
+	left: 50px;
+	bottom: 15px;
+}
+
+.filters ul {
+	list-style: none;
+	padding-left: 10px;
+}
+
+.filters h2 {
+	/*dictance between titles h2 and the elements*/
+	margin: 0em;
+	margin-left: -25px;
+}
+
+/*separation between each element of li*/
+.filters li {
+	margin-bottom: 7px;
+	margin-left: -15px;
+}
+
+ul.popover {
+	border: 1px solid #CCCCCC;
+	border-radius: 4px;
+	margin-top: -20px;
+	/*spaces between each element with the border's block*/
+	padding-top: 30px;
+	padding-left: 70px;
+	padding-bottom: 20px;
+	/*for the elements that are going to be dropdowned*/
+	display: none;
+	background-color: white;
+}
+
+.locations:hover ul.popover {
+	display: block;
+	/*propiedad CSS que dice qué elementos se muestran por encima*/
+	z-index: 100;
+}
+
+.amenities:hover ul.popover {
+	display: block;
+	z-index: 100;
+}
