@@ -71,12 +71,10 @@ body .filters .amenities h4 {
 }
 
 .filters h2 {
-	/*dictance between titles h2 and the elements*/
 	margin: 0em;
 	margin-left: -25px;
 }
 
-/*separation between each element of li*/
 .filters li {
 	margin-bottom: 7px;
 	margin-left: -15px;
@@ -86,18 +84,15 @@ ul.popover {
 	border: 1px solid #CCCCCC;
 	border-radius: 4px;
 	margin-top: -20px;
-	/*spaces between each element with the border's block*/
 	padding-top: 30px;
 	padding-left: 70px;
 	padding-bottom: 20px;
-	/*for the elements that are going to be dropdowned*/
 	display: none;
 	background-color: white;
 }
 
 .locations:hover ul.popover {
 	display: block;
-	/*propiedad CSS que dice qué elementos se muestran por encima*/
 	z-index: 100;
 }
 
